@@ -34,28 +34,57 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _a, _b;
+var _a;
 var _this = this;
-var showJoke = function (apidata) {
+//dad jokes
+var header = {
+    method: 'GET',
+    headers: {
+        Accept: 'application/json'
+    }
+};
+var loadJoke = function () { return __awaiter(_this, void 0, void 0, function () {
+    var dadJoke, data;
     var _a;
-    (_a = document.getElementById('loading')) === null || _a === void 0 ? void 0 : _a.innerHTML = JSON.stringify(apidata.value);
-};
-var loading = (_a = document.getElementById('loading')) === null || _a === void 0 ? void 0 : _a.innerHTML;
-var dadJoke = function () {
-    fetch('https://api.chucknorris.io/jokes/random')
-        //  fetch('https://icanhazdadjoke.com/api')
-        .then(function (res) { return res.json(); })
-        .then(function (data) { return showJoke(data); });
-};
-dadJoke();
-var loadJoke = function () {
-    fetch('https://api.chucknorris.io/jokes/random')
-        //  fetch('https://icanhazdadjoke.com/api')
-        .then(function (res) { return res.json(); })
-        .then(function (data) { return showJoke(data); });
-};
-loadJoke();
-(_b = document.getElementById("acudit")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", loadJoke);
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0: return [4 /*yield*/, fetch('https://icanhazdadjoke.com', header)];
+            case 1:
+                dadJoke = _b.sent();
+                return [4 /*yield*/, dadJoke.json()];
+            case 2:
+                data = _b.sent();
+                (_a = document.getElementById('loading')) === null || _a === void 0 ? void 0 : _a.innerHTML = data.joke;
+                return [2 /*return*/];
+        }
+    });
+}); };
+//chuck Norris Jokes
+function chuckJoke() {
+    var _a;
+    return __awaiter(this, void 0, void 0, function () {
+        var data, json;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, fetch('https://api.chucknorris.io/jokes/random')];
+                case 1:
+                    data = _b.sent();
+                    return [4 /*yield*/, data.json()];
+                case 2:
+                    json = _b.sent();
+                    (_a = document.getElementById('loading')) === null || _a === void 0 ? void 0 : _a.innerHTML = json.value;
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+//alternar
+function showRandomJoke() {
+    var option = Math.round(Math.random() * 10);
+    var random = (option > 5) ? chuckJoke() : loadJoke();
+}
+(_a = document.getElementById("acudit")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", showRandomJoke);
+//meteo
 var lat = 41.3828939;
 var lon = 2.1774322;
 var appId = '3356a3346fdf41242690eef93099bd6f';
@@ -63,12 +92,6 @@ var url = "https://api.openweathermap.org/data/2.5/weather?lat=".concat(lat, "&l
 var city = "Barcelona";
 var countryCode = "ES";
 var url2 = "http://api.openweathermap.org/geo/1.0/direct?q=".concat(city, ",").concat(countryCode, "&appid=").concat(appId);
-fetch(url2)
-    .then(function (res) { return res.json(); })
-    .then(function (data2) { return mostrarCoord(data2); });
-function mostrarCoord(data2) {
-    var lat = data2[0].lat;
-}
 var mostrarCiudad = function () { return __awaiter(_this, void 0, void 0, function () {
     var res, data2, name;
     var _a;
@@ -86,8 +109,6 @@ var mostrarCiudad = function () { return __awaiter(_this, void 0, void 0, functi
         }
     });
 }); };
-//-----------------//
-//https://openweathermap.org/weather-conditions
 var mostrarClima = function () { return __awaiter(_this, void 0, void 0, function () {
     var res, data, temp, weather, icon, centigrados;
     var _a, _b;
@@ -109,19 +130,17 @@ var mostrarClima = function () { return __awaiter(_this, void 0, void 0, functio
         }
     });
 }); };
-//puntuar
+//score
 var d = new Date();
 var dateToday = d.toISOString();
 var reportAcudits = [];
-var report = {
-    joke: loading,
-    score: 0,
-    date: dateToday
+var puntuar = function (score) {
+    var _a;
+    var report = {
+        joke: (_a = document.getElementById('loading')) === null || _a === void 0 ? void 0 : _a.innerHTML,
+        score: score,
+        date: dateToday
+    };
+    reportAcudits.push(report);
+    console.log("score", reportAcudits);
 };
-reportAcudits.push(report);
-function puntuar(score) {
-    reportAcudits[reportAcudits.length - 1].score = score;
-    console.log("report jokes score", reportAcudits);
-    loadJoke();
-}
-;
